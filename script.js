@@ -83,19 +83,19 @@ function processNumber(e) {
 function processOperator(e) {
   let val = e.target.textContent;
 
-  console.log(match[operator]);
-  console.log(match[val]);
+  clearHighlight();
   if (val in match)
     document.querySelector(match[val]).classList.add("highlight");
-
-  if (operator === "+") {
-    firstNum = round(+firstNum + +secondNum).toString();
-  } else if (operator === "-") {
-    firstNum = round(+firstNum - +secondNum).toString();
-  } else if (operator === "x") {
-    firstNum = round(+firstNum * +secondNum).toString();
-  } else if (operator === "/") {
-    firstNum = round(+firstNum / +secondNum).toString();
+  if (secondNum !== "") {
+    if (operator === "+") {
+      firstNum = round(+firstNum + +secondNum).toString();
+    } else if (operator === "-") {
+      firstNum = round(+firstNum - +secondNum).toString();
+    } else if (operator === "x") {
+      firstNum = round(+firstNum * +secondNum).toString();
+    } else if (operator === "/") {
+      firstNum = round(+firstNum / +secondNum).toString();
+    }
   }
   operator = val;
 
