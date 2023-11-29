@@ -7,6 +7,9 @@ const numbers = document.querySelectorAll(".number");
 const operators = document.querySelectorAll(".orange");
 const result = document.querySelector(".result");
 
+const percision = 100000000;
+const round = (x) => Math.round(x * percision) / percision;
+
 document.querySelector(".clear").addEventListener("click", clearResult);
 
 numbers.forEach((elem) => {
@@ -39,7 +42,7 @@ function processOperator(e) {
     firstNum = (+firstNum + +secondNum).toString();
   } else if (operator === "-") {
     firstNum = (+firstNum - +secondNum).toString();
-  } else if (operator === "X") {
+  } else if (operator === "x") {
     firstNum = (+firstNum * +secondNum).toString();
   } else if (operator === "/") {
     firstNum = (+firstNum / +secondNum).toString();
@@ -63,11 +66,10 @@ function clearResult() {
 }
 
 function updateResult(val) {
-  console.log(val);
-  if (val.includes(".") && val.length > 8) {
-    val = val.slice(0, 8);
-  } else if (!val.includes(".") && val.length > 7) {
+  if ((!val.includes(".") || val.indexOf(".") >= 7) && val.length > 7) {
     val = (+val).toExponential(2);
+  } else if (val.includes(".") && val.length > 8) {
+    val = val.slice(0, 8);
   }
   result.textContent = val;
 }
