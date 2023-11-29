@@ -107,10 +107,10 @@ function processOperator(e) {
 
 function updateResult(val) {
   if (val == "") val = "0";
-  if ((!val.includes(".") || val.indexOf(".") >= 7) && val.length > 7) {
+  if ((!val.includes(".") || val.indexOf(".") >= 8) && val.length > 7) {
     val = (+val).toExponential(2);
   } else if (val.includes(".") && val.length > 8) {
-    val = val.slice(0, 8);
+    val = val.slice(0, 7);
   }
   result.textContent = val;
 }
