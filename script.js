@@ -2,6 +2,7 @@ let firstNum = "";
 let isFirst = true;
 let secondNum = "";
 let operator = "";
+let resetNext = false;
 
 const numbers = document.querySelectorAll(".number");
 const operators = document.querySelectorAll(".orange");
@@ -10,9 +11,19 @@ const result = document.querySelector(".result");
 const percision = 100000000;
 const round = (x) => Math.round(x * percision) / percision;
 
-document.querySelector(".clear").addEventListener("click", clearResult);
+document.querySelector(".clear").addEventListener("click", clear);
+document.querySelector(".percent").addEventListener("click", () => {
+  if (isFirst || secondNum === "") {
+    firstNum = round(+firstNum / 100).toString();
+    updateResult(firstNum);
+  } else {
+    secondNum = round(+secondNum / 100).toString();
+    updateResult(secondNum);
+  }
+  resetNext = true;
+});
 document.querySelector(".sign").addEventListener("click", () => {
-  if (isFirst && +firstNum !== 0) {
+  if ((isFirst || secondNum == "") && +firstNum !== 0) {
     firstNum = (-1 * +firstNum).toString();
     updateResult(firstNum);
   } else if (+secondNum !== 0) {
@@ -29,13 +40,20 @@ operators.forEach((elem) => {
   elem.addEventListener("click", processOperator);
 });
 
+function clear() {
+  firstNum = "";
+  secondNum = "";
+  isFirst = true;
+  operator = "";
+  updateResult("0");
+}
 function processNumber(e) {
   let val = e.target.textContent;
   let fullNum = "";
   // If enter was the last operator, reset numbers
-  if (operator === "=") {
-    operator = "";
-    firstNum = "";
+  if (resetNext) {
+    clear();
+    resetNext = false;
   }
 
   fullNum = isFirst ? firstNum : secondNum;
@@ -68,21 +86,15 @@ function processOperator(e) {
   }
   operator = val;
 
-  isFirst = val === "=";
+  resetNext = val === "=";
+  isFirst = false;
   secondNum = "";
   console.log(firstNum);
   updateResult(firstNum);
 }
 
-function clearResult() {
-  firstNum = "";
-  secondNum = "";
-  isFirst = true;
-  operator = "";
-  updateResult("0");
-}
-
 function updateResult(val) {
+  console.log(val);
   if ((!val.includes(".") || val.indexOf(".") >= 7) && val.length > 7) {
     val = (+val).toExponential(2);
   } else if (val.includes(".") && val.length > 8) {
