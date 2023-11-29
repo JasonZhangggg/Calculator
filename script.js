@@ -23,10 +23,20 @@ operators.forEach((elem) => {
 function processNumber(e) {
   let val = e.target.textContent;
   let fullNum = "";
-  fullNum = isFirst ? firstNum : secondNum;
+  // If enter was the last operator, reset numbers
+  if (operator === "=") {
+    operator = "";
+    firstNum = "";
+  }
 
+  fullNum = isFirst ? firstNum : secondNum;
   if (fullNum.replace(".", "").length < 7) {
-    if (val !== "." || !firstNum.includes(".")) {
+    // Add a zero in front if it is the first decimal
+    if (val === "." && fullNum.length === 0) {
+      fullNum = "0.";
+    }
+    // Only add a decimal if we don't have one already
+    else if (val !== "." || !fullNum.includes(".")) {
       fullNum += e.target.textContent;
     }
     if (isFirst) firstNum = fullNum;
@@ -39,19 +49,17 @@ function processOperator(e) {
   let val = e.target.textContent;
 
   if (operator === "+") {
-    firstNum = (+firstNum + +secondNum).toString();
+    firstNum = round(+firstNum + +secondNum).toString();
   } else if (operator === "-") {
-    firstNum = (+firstNum - +secondNum).toString();
+    firstNum = round(+firstNum - +secondNum).toString();
   } else if (operator === "x") {
-    firstNum = (+firstNum * +secondNum).toString();
+    firstNum = round(+firstNum * +secondNum).toString();
   } else if (operator === "/") {
-    firstNum = (+firstNum / +secondNum).toString();
+    firstNum = round(+firstNum / +secondNum).toString();
   }
   operator = val;
 
-  if (val !== "=") {
-    isFirst = false;
-  }
+  isFirst = val === "=";
   secondNum = "";
   console.log(firstNum);
   updateResult(firstNum);
