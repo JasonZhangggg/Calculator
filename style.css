@@ -48,12 +48,24 @@ button.lightgray {
   color: black;
 }
 
+button.lightgray:hover {
+  background-color: #d4d4d2;
+}
+
+button.orange:hover {
+  background-color: #ffba5a;
+}
+
+button:hover {
+  background-color: #505050;
+}
+
 .result {
+  height: 130px;
   text-align: right;
   font-size: 85px;
   color: white;
   font-weight: 300;
-  margin-bottom: 18px;
   margin-top: 30px;
   padding-right: 15px;
 }
