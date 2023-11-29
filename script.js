@@ -11,6 +11,15 @@ const percision = 100000000;
 const round = (x) => Math.round(x * percision) / percision;
 
 document.querySelector(".clear").addEventListener("click", clearResult);
+document.querySelector(".sign").addEventListener("click", () => {
+  if (isFirst && +firstNum !== 0) {
+    firstNum = (-1 * +firstNum).toString();
+    updateResult(firstNum);
+  } else if (+secondNum !== 0) {
+    secondNum = (-1 * +secondNum).toString();
+    updateResult(secondNum);
+  }
+});
 
 numbers.forEach((elem) => {
   elem.addEventListener("click", processNumber);
