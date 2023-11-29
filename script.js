@@ -3,13 +3,17 @@ let isFirst = true;
 let secondNum = "";
 let operator = "";
 let resetNext = false;
-
+let match = { "+": ".plus", "-": ".minus", x: ".mult", "/": ".divide" };
+let clearHighlight = () => {
+  if (operator in match)
+    document.querySelector(match[operator]).classList.remove("highlight");
+};
 const numbers = document.querySelectorAll(".number");
 const operators = document.querySelectorAll(".orange");
 const result = document.querySelector(".result");
 
-const percision = 100000000;
-const round = (x) => Math.round(x * percision) / percision;
+const precision = 100000000;
+const round = (x) => Math.round(x * precision) / precision;
 
 document.querySelector(".clear").addEventListener("click", clear);
 document.querySelector(".percent").addEventListener("click", () => {
@@ -41,6 +45,7 @@ operators.forEach((elem) => {
 });
 
 function clear() {
+  clearHighlight();
   firstNum = "";
   secondNum = "";
   isFirst = true;
@@ -67,13 +72,21 @@ function processNumber(e) {
       fullNum += e.target.textContent;
     }
     if (isFirst) firstNum = fullNum;
-    else secondNum = fullNum;
+    else {
+      secondNum = fullNum;
+      clearHighlight();
+    }
     updateResult(fullNum);
   }
 }
 
 function processOperator(e) {
   let val = e.target.textContent;
+
+  console.log(match[operator]);
+  console.log(match[val]);
+  if (val in match)
+    document.querySelector(match[val]).classList.add("highlight");
 
   if (operator === "+") {
     firstNum = round(+firstNum + +secondNum).toString();
@@ -89,12 +102,11 @@ function processOperator(e) {
   resetNext = val === "=";
   isFirst = false;
   secondNum = "";
-  console.log(firstNum);
   updateResult(firstNum);
 }
 
 function updateResult(val) {
-  console.log(val);
+  if (val == "") val = "0";
   if ((!val.includes(".") || val.indexOf(".") >= 7) && val.length > 7) {
     val = (+val).toExponential(2);
   } else if (val.includes(".") && val.length > 8) {
